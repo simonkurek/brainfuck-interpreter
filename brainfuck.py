@@ -33,7 +33,7 @@ class Interpreter:
         self.memory = [0]
         self.actual_line = 1
         self.instruction_pointer = 0
-        self.loop_start_index = 0
+        self.loop_start_index_stack = []
         self.loop_end_index = 0
         self.instruction_map = {
             '+':self.increment,
@@ -54,17 +54,19 @@ class Interpreter:
         #print('\n')
 
     def load_next_instruction(self):
+        #print(f'Instruction number: {self.instruction_pointer}') #loop checker
         instruction = self.code[self.instruction_pointer]
         if instruction in self.instruction_map:
             self.instruction_map[instruction]()
         self.instruction_pointer += 1
 
     def loop_start(self):
-        self.loop_start_index = self.instruction_pointer
+        self.loop_start_index_stack.append(self.instruction_pointer)
         if self.memory[self.pointer] == 0:
             #jump to ]
             if self.loop_end_index == 0:
                 #locker
+                print('locker activated')
                 pass
             else:
                 self.instruction_pointer = self.loop_end_index            
@@ -72,7 +74,10 @@ class Interpreter:
     def loop_end(self):
         self.loop_end_index = self.instruction_pointer
         if self.memory[self.pointer] != 0:
-            self.instruction_pointer = self.loop_start_index
+            self.instruction_pointer = self.loop_start_index_stack[-1]
+        else:
+            self.loop_end_index = 0
+            self.loop_start_index_stack.pop()
         
     def increment(self):
         self.memory[self.pointer] += 1
@@ -107,12 +112,14 @@ if __name__ == '__main__':
     #print(interpreter.memory)
 
 
-#todo
+# TODO
+#interpreter error on loop_end_index not exist (check locker is solution)
 
+# DONE
 #start_loop_id - int ze stosu (FILO)
 #end_loop_id - int
 #reset end_loop_id on exit
-#interpreter error on loop_end_index not exist
+
 
 #future todo
 
