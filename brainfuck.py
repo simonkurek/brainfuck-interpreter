@@ -54,7 +54,8 @@ class Interpreter:
         #print('\n')
 
     def load_next_instruction(self):
-        #print(f'Instruction number: {self.instruction_pointer}') #loop checker
+        print(f'Instruction number: {self.instruction_pointer}') #loop checker
+        print(self.memory)
         instruction = self.code[self.instruction_pointer]
         if instruction in self.instruction_map:
             self.instruction_map[instruction]()
@@ -65,9 +66,9 @@ class Interpreter:
         if self.memory[self.pointer] == 0:
             #jump to ]
             if self.loop_end_index == 0:
-                #locker
-                print('locker activated')
-                pass
+                while self.code[self.instruction_pointer] != ']':
+                    self.instruction_pointer += 1
+                self.loop_end_index = self.instruction_pointer
             else:
                 self.instruction_pointer = self.loop_end_index            
 
@@ -108,22 +109,28 @@ class Interpreter:
 if __name__ == '__main__':
     fch = FileContentHandler()
     fch.load()
+    # temp debug mode
+    #print(fch.code[90:96])
     interpreter = Interpreter(fch.code)
-    #print(interpreter.memory)
+    print(interpreter.memory)
 
 
 # TODO
-#interpreter error on loop_end_index not exist (check locker is solution)
+# int range 0-255!!!!!!
 
 # DONE
-#start_loop_id - int ze stosu (FILO)
-#end_loop_id - int
-#reset end_loop_id on exit
-
+#interpreter locker nested loops mechanism
 
 #future todo
 
 # handle all exceptions
 # dubug mode:
 #  - step by step memory dump (pointer position, memory dump, instruction pointer,)
-# access to assci
+
+# all functions
+# reading code from file
+# instrucion couter
+# memory dump (manualy)
+# actual line (debug)
+# instruction pointer (what interpreter is doing in any moment)
+# dynamic memory usage 
