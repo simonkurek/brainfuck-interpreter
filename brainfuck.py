@@ -54,8 +54,8 @@ class Interpreter:
         #print('\n')
 
     def load_next_instruction(self):
-        print(f'Instruction number: {self.instruction_pointer}') #loop checker
-        print(self.memory)
+        #print(f'Instruction number: {self.instruction_pointer}') #loop checker
+        #print(self.memory)
         instruction = self.code[self.instruction_pointer]
         if instruction in self.instruction_map:
             self.instruction_map[instruction]()
@@ -81,10 +81,12 @@ class Interpreter:
             self.loop_start_index_stack.pop()
         
     def increment(self):
-        self.memory[self.pointer] += 1
+        #self.memory[self.pointer] += 1
+        self.memory[self.pointer] = (self.memory[self.pointer] + 1) % 256
 
     def decrement(self):
-        self.memory[self.pointer] -= 1
+        #self.memory[self.pointer] -= 1
+        self.memory[self.pointer] = (self.memory[self.pointer] - 1) % 256
 
     def pointer_right(self):
         if len(self.memory)-1 == self.pointer:
@@ -116,10 +118,10 @@ if __name__ == '__main__':
 
 
 # TODO
-# int range 0-255!!!!!!
+# sm is broken and i dont know what...
 
 # DONE
-#interpreter locker nested loops mechanism
+# int range 0-255!!!!!!
 
 #future todo
 
